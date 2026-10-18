@@ -9,7 +9,7 @@ Die zentrale Frage ist, wie sich verwundbare Abhängigkeiten sicher beheben lass
 ## Was in dieser Momentaufnahme erkennbar ist
 
 - Das Backend-Manifest deklariert `vitest: ^3.2.4` als Entwicklungsabhängigkeit.
-- In dieser Momentaufnahme löst die Lockdatei Vitest auf Version `3.2.7) auf.
+- In dieser Momentaufnahme löst die Lockdatei Vitest auf Version `3.2.7` auf.
 - Die Lockdatei enthält Einträge für `@vitest/mocker`, `deepmerge-ts` und `mysql2`. Allein ihre Anwesenheit belegt weder die Ausnutzbarkeit einer Schwachstelle noch, dass diese Pakete in einer Produktionsinstallation enthalten sind.
 - Die CI installiert Abhängigkeiten mit `npm ci`, generiert den Prisma Client, führt Backend-Tests aus und erstellt den Backend-Build. Der hier gezeigte CI-Workflow führt weder `npm audit` noch OSV-Scanner oder Trivy aus.
 
