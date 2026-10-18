@@ -1,16 +1,16 @@
-# FieldReport Security Review
+# FieldReport: Sicherheitsprüfung
 
-This repository contains a deliberately limited snapshot of selected dependency and CI files from the private FieldReport project so an external reviewer can assess a dependency-upgrade question.
+Dieses Repository enthält eine bewusst begrenzte Momentaufnahme ausgewählter Dependency- und CI-Dateien aus dem privaten FieldReport-Projekt. Sie soll einer externen Person ermöglichen, eine Frage zur sicheren Aktualisierung von Abhängigkeiten zu prüfen.
 
-## Scope
+## Umfang
 
-- `backend/package.json`: declared backend dependencies and scripts.
-- `backend/package-lock.json`: locked dependency graph for the same snapshot.
-- `.github/workflows/ci.yml`: current CI workflow from the source repository's `main` branch.
-- `SECURITY_REVIEW.md`: question, known context, and requested review.
+- `backend/package.json`: deklarierte Backend-Abhängigkeiten und Skripte.
+- `backend/package-lock.json`: festgeschriebener Abhängigkeitsbaum derselben Momentaufnahme.
+- `.github/workflows/ci.yml`: aktueller CI-Workflow aus dem `main`-Branch des Quell-Repositorys.
+- `SECURITY_REVIEW.md`: Fragestellung, bekannter Kontext und gewünschte Prüfung.
 
-This is **not** the full FieldReport source code. No application source, database schema, environment files, credentials, user data, or authorization implementation are intentionally included.
+Dies ist **nicht** der vollständige FieldReport-Quellcode. Anwendungscode, Datenbankschema, Umgebungsdateien, Zugangsdaten, Nutzerdaten und die Autorisierungsimplementierung sind bewusst nicht enthalten.
 
-## Important snapshot note
+## Wichtiger Hinweis zur Momentaufnahme
 
-The files were copied from `kiajonam/FieldReport`'s `main` branch on 2026-10-18. They are a review snapshot and may not match the latest local work or other branches. Verify the source branch and commit before drawing conclusions.
+Die Dateien wurden am 18.10.2026 aus dem `main`-Branch von `kiajonam/FieldReport` kopiert. Sie bilden eine Momentaufnahme für die Prüfung und stimmen möglicherweise nicht mit den neuesten lokalen Änderungen oder anderen Branches überein. Bitte prüfe den Quell-Branch und den Commit, bevor du Schlussfolgerungen ziehst.
