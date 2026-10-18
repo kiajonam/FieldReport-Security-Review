@@ -1,40 +1,41 @@
-# Dependency Security Review Request
+# Bitte um Prüfung der Abhängigkeitssicherheit
 
-## Problem to review
+## Zu prüfendes Problem
 
-A dependency audit of the FieldReport backend reported vulnerabilities involving transitive dependencies. The packages mentioned during the initial investigation included `@vitest/mocker`, `deepmerge-ts`, and `mysql2`. The exact raw audit JSON/text and advisory IDs still need to be attached to this review so the findings can be independently reproduced.
+Bei einer Dependency-Prüfung des FieldReport-Backends wurden Schwachstellen in transitiven Abhängigkeiten gemeldet. Bei der ersten Untersuchung wurden unter anderem die Pakete `@vitest/mocker`, `deepmerge-ts` und `mysql2` erwähnt. Der vollständige Audit-Bericht als Rohtext oder JSON sowie die IDs der Sicherheitsmeldungen müssen noch ergänzt werden, damit sich die Ergebnisse unabhängig reproduzieren lassen.
 
-The main concern is how to remediate vulnerable dependencies safely without accidentally breaking the backend test suite, build, or unrelated application behavior.
+Die zentrale Frage ist, wie sich verwundbare Abhängigkeiten sicher beheben lassen, ohne versehentlich die Backend-Tests, den Build oder anderes Anwendungsverhalten zu beeinträchtigen.
 
-## What is visible in this snapshot
+## Was in dieser Momentaufnahme erkennbar ist
 
-- The backend manifest declares `vitest: ^3.2.4` as a development dependency.
-- The lockfile resolves Vitest to `3.2.7` in this snapshot.
-- The lockfile includes entries for `@vitest/mocker`, `deepmerge-ts`, and `mysql2`; their presence alone does not establish exploitability or whether they are included in a production deployment.
-- CI installs dependencies with `npm ci`, generates Prisma Client, runs backend tests, and builds the backend. The displayed CI workflow does not run `npm audit`, OSV-Scanner, or Trivy.
+- Das Backend-Manifest deklariert `vitest: ^3.2.4` als Entwicklungsabhängigkeit.
+- In dieser Momentaufnahme löst die Lockdatei Vitest auf Version `3.2.7) auf.
+- Die Lockdatei enthält Einträge für `@vitest/mocker`, `deepmerge-ts` und `mysql2`. Allein ihre Anwesenheit belegt weder die Ausnutzbarkeit einer Schwachstelle noch, dass diese Pakete in einer Produktionsinstallation enthalten sind.
+- Die CI installiert Abhängigkeiten mit `npm ci`, generiert den Prisma Client, führt Backend-Tests aus und erstellt den Backend-Build. Der hier gezeigte CI-Workflow führt weder `npm audit` noch OSV-Scanner oder Trivy aus.
 
-## Prior isolated test result (context from the project owner)
+## Ergebnis eines früheren isolierten Tests (Angaben des Projektinhabers)
 
-The owner reports that a separate upgrade experiment completed installation, Prisma generation, backend build, and 468 backend tests successfully, with no vulnerabilities reported by the audit after the upgrade. This was an isolated worktree/experiment, not proof that the change is already present on `main`, nor proof that all security risks are eliminated. The exact upgrade diff, package-lock, audit output, and CI run should be checked before relying on this result.
+Der Projektinhaber berichtet, dass ein separates Upgrade-Experiment die Installation, die Prisma-Generierung, den Backend-Build und 468 Backend-Tests erfolgreich abgeschlossen hat. Nach dem Upgrade habe das Audit keine Schwachstellen mehr gemeldet. Dieses Ergebnis stammt aus einem isolierten Worktree bzw. Experiment. Es beweist weder, dass die Änderung bereits in `main` enthalten ist, noch, dass sämtliche Sicherheitsrisiken beseitigt wurden. Vor einer Entscheidung sollten der genaue Upgrade-Diff, die Lockdatei, die Audit-Ausgabe und der CI-Lauf geprüft werden.
 
-## Questions for the reviewer
+## Fragen an die prüfende Person
 
-1. Which exact advisories affect the locked versions, and what are their severity, affected version ranges, and fixed versions?
-2. Are the vulnerable packages reachable only through development/test tooling, or can they enter a production installation/build? Please explain the evidence rather than inferring from the dependency name.
-3. Is a Vitest major upgrade necessary, or can a narrower compatible update resolve the advisories?
-4. What peer-dependency, Node.js, Vite, TypeScript, and test-runner compatibility issues should be checked?
-5. What verification would you require before accepting the upgrade (clean install, full tests, build, audit, lockfile diff, CI, and relevant E2E tests)?
-6. Would you recommend OSV-Scanner or Trivy for additional coverage, and which exact commands/configuration would be appropriate here?
+1. Welche konkreten Sicherheitsmeldungen betreffen die festgeschriebenen Versionen? Wie lauten Schweregrad, betroffene Versionsbereiche und korrigierte Versionen?
+2. Sind die verwundbaren Pakete ausschließlich über Entwicklungs- und Testwerkzeuge erreichbar, oder können sie auch in eine Produktionsinstallation bzw. einen Produktions-Build gelangen? Bitte die Belege erläutern und nicht allein vom Paketnamen auf die Erreichbarkeit schließen.
+3. Ist ein Major-Upgrade von Vitest erforderlich, oder reicht eine kleinere, kompatible Aktualisierung aus, um die Meldungen zu beheben?
+4. Welche Kompatibilitätsprobleme mit Peer-Abhängigkeiten, Node.js, Vite, TypeScript und dem Test-Runner sollten geprüft werden?
+5. Welche Prüfungen wären vor der Freigabe des Upgrades erforderlich (saubere Installation, vollständige Tests, Build, Audit, Lockdatei-Diff, CI und relevante End-to-End-Tests)?
+6. Empfiehlst du OSV-Scanner oder Trivy für zusätzliche Prüfungen? Welche konkreten Befehle und Konfigurationen wären hier sinnvoll?
 
-## Requested output
+## Gewünschtes Ergebnis
 
-Please provide a concise review with:
-- confirmed findings versus assumptions,
-- recommended minimal version changes,
-- commands to reproduce the audit,
-- a safe upgrade and rollback strategy,
-- any additional files or logs genuinely needed.
+Bitte gib eine kurze Einschätzung mit:
 
-## Safety boundaries
+- bestätigten Erkenntnissen im Unterschied zu Annahmen,
+- empfohlenen minimalen Versionsänderungen,
+- Befehlen zur Wiederholung des Audits,
+- einer sicheren Upgrade- und Rollback-Strategie,
+- weiteren Dateien oder Protokollen, die tatsächlich benötigt werden.
 
-This repository is a public, limited review snapshot. Do not assume it contains the whole project. Do not request secrets, `.env` files, production database access, or the full private repository unless a specific need is justified. Do not recommend `npm audit fix --force` without first explaining the proposed breaking changes and their impact.
+## Sicherheitsgrenzen
+
+Dieses Repository ist eine öffentliche, bewusst begrenzte Momentaufnahme für die Prüfung. Gehe nicht davon aus, dass es das gesamte Projekt enthält. Fordere keine Secrets, `.env`-Dateien, keinen Zugriff auf die Produktionsdatenbank und nicht das vollständige private Repository an, sofern dafür kein konkreter Bedarf begründet wird. Empfiehl nicht einfach `npm audit fix --force), ohne zuvor die vorgeschlagenen inkompatiblen Änderungen und deren Auswirkungen zu erläutern.
